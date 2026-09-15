@@ -1,12 +1,24 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
-  templateUrl: './app.html',
+  standalone: true,
+  imports: [RouterOutlet, NavbarComponent],
+  template: `
+    <div class="app-layout">
+      <app-navbar />
+      <main class="main-content">
+        <router-outlet />
+      </main>
+    </div>
+  `,
+  styles: [`
+    .app-layout { display: flex; flex-direction: column; min-height: 100vh; background-color: #f8fafc; }
+    .main-content { flex: 1; }
+  `]
 })
-export class App {
-  protected readonly title = signal('shoplace-frontend');
+export class AppComponent {
+  title = 'Shoplace';
 }
