@@ -29,7 +29,18 @@ import { CartService } from '../../services/cart';
                     <span class="item-name">{{ item.product.name }}</span>
                     <span class="item-qty">Qty: {{ item.quantity }}</span>
                   </div>
-                  <span class="item-price">{{ (item.product.price * item.quantity) | currency:'USD' }}</span>
+
+                  <div class="item-actions">
+                    <span class="item-price">{{ (item.product.price * item.quantity) | currency:'USD' }}</span>
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      (click)="removeItem(item.product.id)"
+                      title="Remove item"
+                    >
+                      🗑️
+                    </button>
+                  </div>
                 </li>
               }
             </ul>
@@ -81,11 +92,14 @@ import { CartService } from '../../services/cart';
     .section-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; }
     .section-card h3 { font-size: 1.25rem; font-weight: 600; margin-top: 0; margin-bottom: 16px; color: #0f172a; }
     .item-list { list-style: none; padding: 0; margin: 0 0 16px 0; }
-    .item-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
     .item-info { display: flex; flex-direction: column; }
     .item-name { font-weight: 500; color: #1e293b; }
     .item-qty { font-size: 0.8rem; color: #64748b; }
+    .item-actions { display: flex; align-items: center; gap: 12px; }
     .item-price { font-weight: 600; color: #0f172a; }
+    .remove-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 4px; border-radius: 4px; transition: background 0.2s; }
+    .remove-btn:hover { background: #fee2e2; }
     .total-row { display: flex; justify-content: space-between; font-size: 1.125rem; font-weight: 700; border-top: 2px solid #e2e8f0; padding-top: 12px; }
     .total-amount { color: #059669; }
     .form-group { margin-bottom: 16px; }
@@ -106,6 +120,12 @@ export class CheckoutComponent {
     city: '',
     zipCode: ''
   };
+
+  removeItem(productId: number | undefined): void {
+    if (productId !== undefined) {
+      this.cartService.removeItem(productId);
+    }
+  }
 
   processOrder(): void {
     alert(`Thank you, ${this.shipping.fullName}! Your order has been placed successfully.`);
