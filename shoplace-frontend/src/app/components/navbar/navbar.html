@@ -1,1 +1,42 @@
-<p>navbar works!</p>
+<header class="navbar-header">
+  <div class="navbar-container">
+    <!-- Logo / Brand -->
+    <a class="brand-logo" routerLink="/">
+      <span class="brand-icon">🛍️</span>
+      <span class="brand-name">Shoplace</span>
+    </a>
+
+    <!-- Live Search Input -->
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search products by name or category..."
+        [(ngModel)]="searchInputValue"
+        (input)="onInputChange()"
+      />
+      @if (searchInputValue) {
+        <button class="clear-search-btn" (click)="clearInput()" aria-label="Clear search">✕</button>
+      } @else {
+        <span class="search-icon">🔍</span>
+      }
+    </div>
+
+    <!-- Right Side Actions -->
+    <div class="nav-actions">
+      <button class="cart-btn" (click)="navigateToCheckout()" aria-label="Shopping Cart">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-label">Cart</span>
+
+        @if (cartService.totalCount() > 0) {
+          <span class="cart-badge">{{ cartService.totalCount() }}</span>
+        }
+      </button>
+
+      @if (cartService.totalCount() > 0) {
+        <span class="cart-total" (click)="navigateToCheckout()">
+          {{ cartService.totalPrice() | currency:'USD' }}
+        </span>
+      }
+    </div>
+  </div>
+</header>

@@ -1,1 +1,9 @@
-<p>product-list works!</p>
+<div class="product-grid">
+  @for (item of products(); track item.id) {
+    <app-product-card
+      [product]="item"
+      (productDeleted)="onProductDeleted($event)" />
+  } @empty {
+    <p>No products available.</p>
+  }
+</div>
