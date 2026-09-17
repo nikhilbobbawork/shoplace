@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shoplace.shoplace_backend.dto.OrderRequest;
 import com.shoplace.shoplace_backend.entity.Order;
 import com.shoplace.shoplace_backend.service.OrderService;
 
@@ -23,10 +24,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        // Explicitly flush stdout or use standard system err/log to confirm execution
-        System.out.println("=== INCOMING ORDER RECEIVED FROM Customer Name: "+ order.getFullName() + " ===");
-        Order savedOrder = orderService.saveOrder(order);
+    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest orderRequest) {
+        System.out.println("=== INCOMING ORDER RECEIVED FROM Customer Name: " + orderRequest.getFullName() + " ===");
+        Order savedOrder = orderService.saveOrder(orderRequest);
         return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
     }
 }
