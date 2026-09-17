@@ -3,6 +3,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart';
+import { OrderService } from '../../services/order';
 
 @Component({
   selector: 'app-checkout',
@@ -112,6 +113,7 @@ import { CartService } from '../../services/cart';
 })
 export class CheckoutComponent {
   readonly cartService = inject(CartService);
+  private readonly orderService = inject(OrderService);
   private router = inject(Router);
 
   shipping = {
@@ -128,8 +130,32 @@ export class CheckoutComponent {
   }
 
   processOrder(): void {
-    alert(`Thank you, ${this.shipping.fullName}! Your order has been placed successfully.`);
-    this.cartService.clearCart();
-    this.router.navigate(['/products']);
+    if (this.cartService.cartItems().length === 0) return;
+
+    const orderPayload = {
+      fullName: this.shipping.fullName,
+      address: this.shipping.address,
+      city: this.shipping.city,
+      zipCode: this.shipping.zipCode,
+      totalPrice: this.cartService.totalPrice(),
+      items: this.cartService.cartItems().map(item => ({
+        productId: item.product.id,
+        productName: item.product.name,
+        price: item.product.price,
+        quantity: item.quantity
+      }))
+    };
+
+    this.orderService.placeOrder(orderPayload).subscribe({
+      next: (response) => {
+        alert(`Order #${response.id} placed successfully! Thank you, ${this.shipping.fullName}.`);
+        this.cartService.clearCart();
+        this.router.navigate(['/products']);
+      },
+      error: (err) => {
+        console.error('Failed to submit order', err);
+        alert('There was an error processing your order. Please try again.');
+      }
+    });
   }
 }
