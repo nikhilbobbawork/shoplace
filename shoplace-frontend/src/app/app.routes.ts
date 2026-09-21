@@ -29,6 +29,10 @@ export const routes: Routes = [
       import('./pages/checkout/checkout').then(m => m.CheckoutComponent)
   },
   {
+    path: 'register',
+    loadComponent: () => import('./pages/register/register').then(m => m.RegisterComponent)
+  },
+  {
     path: '**',
     redirectTo: 'products'
   }
