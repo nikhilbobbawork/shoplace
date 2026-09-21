@@ -28,8 +28,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) String category) {
-        List<Product> products = productService.getAllProducts(category);
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category) {
+        
+        List<Product> products = productService.getAllProducts(search, category);
         return ResponseEntity.ok(products);
     }
 

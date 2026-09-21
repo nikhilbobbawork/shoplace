@@ -18,32 +18,37 @@ public class ProductService {
     }
 
     public Product createProduct(ProductRequest request) {
-        Product product = new Product(
-            request.name(),
-            request.description(),
-            request.price(),
-            request.stockQuantity(),
-            request.category(),
-            request.imageUrl()
-        );
+        Product product = new Product();
+        product.setName(request.name());
+        product.setDescription(request.description());
+        product.setPrice(request.price());
+        product.setStockQuantity(request.stockQuantity());
+        product.setCategory(request.category());
+        product.setImageUrl(request.imageUrl());
+
         return productRepository.save(product);
     }
 
-    public List<Product> getAllProducts(String category) {
-        if (category != null && !category.isBlank()) {
-            return productRepository.findByCategoryIgnoreCase(category);
+    public List<Product> getAllProducts(String search, String category) {
+        if (search != null && !search.trim().isEmpty()) {
+            return productRepository.findByNameContainingIgnoreCase(search.trim());
         }
+
+        if (category != null && !category.trim().isEmpty()) {
+            return productRepository.findByCategoryIgnoreCase(category.trim());
+        }
+
         return productRepository.findAll();
     }
 
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
     }
 
     public void deleteProduct(Long id) {
         if (!productRepository.existsById(id)) {
-            throw new RuntimeException("Product not found with id: " + id);
+            throw new RuntimeException("Product not found with ID: " + id);
         }
         productRepository.deleteById(id);
     }

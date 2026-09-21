@@ -1,34 +1,20 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CartService } from '../../services/cart';
-import { SearchService } from '../../services/search';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CartService } from '../../services/cart'; // Adjust path as needed
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, FormsModule, RouterLink],
+  imports: [CommonModule, RouterLink, CurrencyPipe],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrls: ['./navbar.css'] // or your component styles
 })
 export class NavbarComponent {
   readonly cartService = inject(CartService);
-  private searchService = inject(SearchService);
   private router = inject(Router);
 
-  searchInputValue = '';
-
-  onInputChange(): void {
-    this.searchService.setSearchQuery(this.searchInputValue);
-  }
-
-  clearInput(): void {
-    this.searchInputValue = '';
-    this.searchService.clearSearch();
-  }
-
   navigateToCheckout(): void {
-    this.router.navigate(['/checkout']);
+    this.router.navigate(['/cart']); // Adjust route if your checkout/cart path is different
   }
 }
