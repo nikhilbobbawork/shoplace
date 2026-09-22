@@ -8,6 +8,19 @@
 
     <!-- Right Side Actions -->
     <div class="nav-actions">
+      @if (authService.isLoggedIn()) {
+        <button class="logout-btn" (click)="authService.logout()" aria-label="Logout">
+          <span class="logout-label">Logout</span>
+        </button>
+      } @else {
+        <button class="register-btn" routerLink="/register" aria-label="Register">
+          <span class="register-label">Register</span>
+        </button>
+        <button class="login-btn" routerLink="/login" aria-label="Login">
+          <span class="login-label">Login</span>
+        </button>
+      }
+
       <button class="cart-btn" (click)="navigateToCheckout()" aria-label="Shopping Cart">
         <span class="cart-icon">🛒</span>
         <span class="cart-label">Cart</span>

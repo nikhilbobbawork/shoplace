@@ -5,35 +5,38 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'products',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'products',
     loadComponent: () =>
-      import('./components/product-list/product-list').then(m => m.ProductListComponent)
+      import('./components/product-list/product-list').then((m) => m.ProductListComponent),
   },
   {
     path: 'products/add',
     loadComponent: () =>
-      import('./pages/add-product/add-product').then(m => m.AddProductComponent)
+      import('./pages/add-product/add-product').then((m) => m.AddProductComponent),
   },
   {
     path: 'products/:id',
     loadComponent: () =>
-      import('./pages/product-detail/product-detail').then(m => m.ProductDetailComponent)
+      import('./pages/product-detail/product-detail').then((m) => m.ProductDetailComponent),
   },
   {
     path: 'checkout',
     canActivate: [checkoutGuard],
-    loadComponent: () =>
-      import('./pages/checkout/checkout').then(m => m.CheckoutComponent)
+    loadComponent: () => import('./pages/checkout/checkout').then((m) => m.CheckoutComponent),
   },
   {
     path: 'register',
-    loadComponent: () => import('./pages/register/register').then(m => m.RegisterComponent)
+    loadComponent: () => import('./pages/register/register').then((m) => m.RegisterComponent),
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/login/login').then((m) => m.LoginComponent),
   },
   {
     path: '**',
-    redirectTo: 'products'
-  }
+    redirectTo: 'products',
+  },
 ];

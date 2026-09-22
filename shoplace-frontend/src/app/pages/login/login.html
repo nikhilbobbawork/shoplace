@@ -1,0 +1,55 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="brand-header">
+      <span class="brand-icon">🛍️</span>
+      <h2>Welcome Back</h2>
+    </div>
+    <p class="subtitle">Log in to your Shoplace account</p>
+
+    @if (errorMessage()) {
+      <div class="alert error">{{ errorMessage() }}</div>
+    }
+
+    @if (successMessage()) {
+      <div class="alert success">{{ successMessage() }}</div>
+    }
+
+    <form (submit)="onSubmit(); $event.preventDefault()">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="john@example.com"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <span>Logging in...</span>
+        } @else {
+          <span>Log In</span>
+        }
+      </button>
+    </form>
+
+    <p class="footer-text">
+      Don't have an account? <a routerLink="/register">Sign up</a>
+    </p>
+  </div>
+</div>

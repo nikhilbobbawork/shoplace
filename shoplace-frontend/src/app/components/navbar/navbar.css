@@ -114,3 +114,7 @@
 .cart-total:hover {
   text-decoration: underline;
 }
+
+.register-btn{
+  cursor: pointer;
+}

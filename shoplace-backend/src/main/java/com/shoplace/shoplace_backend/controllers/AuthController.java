@@ -34,8 +34,8 @@ public class AuthController {
         String password = requestBody.get("password");
 
         // Basic validation
-        if (name == null || email == null || password == null || 
-            name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (name == null || email == null || password == null
+                || name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(Map.of("message", "All fields are required."));
         }
@@ -54,8 +54,46 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of(
-                    "message", "User registered successfully!",
-                    "user", Map.of("id", newUser.getId(), "name", newUser.getName(), "email", newUser.getEmail())
+                        "message", "User registered successfully!",
+                        "user", Map.of("id", newUser.getId(), "name", newUser.getName(), "email", newUser.getEmail())
                 ));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String password = requestBody.get("password");
+
+        // Basic validation
+        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Email and password are required."));
+        }
+
+        // Find user by email
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Invalid email or password."));
+        }
+
+        User user = userOpt.get();
+
+        // Verify password against stored hash
+        boolean passwordMatch = passwordEncoder.matches(password, user.getPassword());
+        if (!passwordMatch) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Invalid email or password."));
+        }
+
+        // For now, return a mock token and user details. 
+        // (You can later replace this with a real JWT token implementation)
+        String mockToken = "mock-jwt-token-" + user.getId() + "-" + System.currentTimeMillis();
+
+        return ResponseEntity.ok(Map.of(
+                "message", "Login successful!",
+                "token", mockToken,
+                "user", Map.of("id", user.getId(), "name", user.getName(), "email", user.getEmail())
+        ));
     }
 }
