@@ -4,7 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
@@ -27,7 +27,7 @@ export class AuthService {
           localStorage.setItem('authToken', response.token);
           this.isLoggedIn.set(true);
         }
-      })
+      }),
     );
   }
 
@@ -40,5 +40,10 @@ export class AuthService {
   private checkInitialAuthStatus(): boolean {
     // Check if token exists in localStorage on app load
     return !!localStorage.getItem('authToken');
+  }
+
+  loginWithGithub(): void {
+    // Triggers Spring Boot's automatic OAuth2 redirect to GitHub
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   }
 }

@@ -14,3 +14,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Ov23liX4Px6r6FvqG1an
+            client-secret: d82b0d7740a795db31afdeb70ea395170042f4a8  

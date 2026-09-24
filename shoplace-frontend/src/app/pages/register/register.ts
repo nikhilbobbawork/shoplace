@@ -38,7 +38,7 @@ export class RegisterComponent {
         this.isLoading.set(false);
         this.successMessage.set('Registration successful! Redirecting...');
         setTimeout(() => {
-          this.router.navigate(['/login']); // Or route to your products page
+          this.router.navigate(['/login']);
         }, 1500);
       },
       error: (err) => {
@@ -46,5 +46,10 @@ export class RegisterComponent {
         this.errorMessage.set(err.error?.message || 'Registration failed. Please try again.');
       }
     });
+  }
+
+  // Triggers Spring Boot's OAuth2 GitHub redirect flow
+  loginWithGithub(): void {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   }
 }
